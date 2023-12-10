@@ -1,4 +1,5 @@
 import dask.array as da
+from dask.distributed import progress
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -12,21 +13,34 @@ def julia_set(z, max_iterations, a):
     return iterations_till_divergence
 
 
-if __name__=="__main__":
-    h_range, w_range, max_iterations = 500, 500, 70
-    a = -0.744 + 0.148j
+def generate_julia(size, max_iterations,a,z_array_np ):
+    print("Dask called")
 
-    # Create a grid using NumPy's ogrid
-    y, x = np.ogrid[1.4: -1.4: h_range*1j, -1.4: 1.4: w_range*1j]
-    z_array_np = x + y*1j
-
-    # Convert the array and split the array into chunks
-    z_array = da.from_array(z_array_np, chunks=(h_range // 10, w_range // 10))
-
-    # Map the function to chunks of the new dask array
+    z_array = da.from_array(z_array_np, chunks=(size, size))
     result = da.map_blocks(julia_set, z_array, max_iterations, a, dtype=float)
-    # Compute the result and visualize
-    plt.imshow(result.compute(), cmap='twilight_shifted')
+    progress(result)
     result.visualize()
-    plt.axis('off')
-    plt.show()
+    return result.compute()
+
+
+
+# if __name__=="__main__":
+
+#     h_range, w_range, max_iterations = 500, 500, 70
+#     a = -0.744 + 0.148j
+
+#     # Create a grid using NumPy's ogrid
+#     y, x = np.ogrid[1.4: -1.4: h_range*1j, -1.4: 1.4: w_range*1j]
+#     z_array_np = x + y*1j
+
+#     # Convert the array and split the array into chunks
+#     print("here")
+#     z_array = da.from_array(z_array_np, chunks=(h_range // 100, w_range // 100))
+
+#     # Map the function to chunks of the new dask array
+#     result = da.map_blocks(julia_set, z_array, max_iterations, a, dtype=float)
+#     # Compute the result and visualize
+#     plt.imshow(result.compute(), cmap='twilight_shifted')
+#     result.visualize()
+#     plt.axis('off')
+#     plt.show()
