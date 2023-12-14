@@ -56,7 +56,7 @@ if __name__=="__main__":
         memory_per_core_property_name='memcore',
         # walltime for each worker job
         walltime='1:0:0',
-        processes=workers,
+        processes=4,
     )
 
     cluster.scale(jobs=10)
@@ -72,7 +72,7 @@ if __name__=="__main__":
     z_array_np = x + y*1j
 
     
-    number_of_chunks = size//(workers*4)
+    number_of_chunks = size//(workers)
     print(f"spint chunks into {number_of_chunks} ")
     start = time.time()
     result = generate_julia(number_of_chunks, max_iterations , a , z_array_np)
