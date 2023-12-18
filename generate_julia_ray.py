@@ -20,7 +20,7 @@ def julia_set(z, max_iterations, a):
 
 def generate_julia(size ,max_iterations,a,z_array_np):
 
- # Determine the size of each chunk
+    # Determine the size of each chunk
     chunk_size = size // num_workers
     remainder = size % num_workers
 
@@ -89,9 +89,9 @@ if __name__ == "__main__":
     num_workers = int(resources.get("CPU"))
     num_cpus = resources.get("CPU")
     print('Problem Size, Execution Time, Number of Workers,Total CPUs')
-
-    for size in [1000 , 1500, 2000, 2500, 3000 , 6000, 12000, 15000]:  # Adjust this based on your needs
-        main(size, num_workers, num_cpus)
+    start = 1000
+    for i in range(20):  # Adjust this based on your needs
+        main(start*2, num_workers, num_cpus)
 
     ray.shutdown()  # Shut down Ray at the end
 

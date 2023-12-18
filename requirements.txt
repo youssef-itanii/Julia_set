@@ -1,4 +1,4 @@
 ipycytoscape 
 dask[complete]
 ray
-memory_profiler
+seaborn
