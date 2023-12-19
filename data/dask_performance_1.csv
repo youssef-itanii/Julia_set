@@ -1,4 +1,4 @@
-Problem Size,Execution Time,Threads,Chunk Size
+ProblemSize,ExecutionTime,Threads,Chunk Size
 1000,0.36580729484558105,4,500
 1500,0.5900478363037109,4,750
 2000,1.3317310810089111,4,1000

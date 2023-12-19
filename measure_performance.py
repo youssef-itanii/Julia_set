@@ -2,7 +2,7 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 from memory_profiler import memory_usage
-import generate_julia_dask , generate_julia_seq , generate_julia_ray
+import generate_julia_dask , generate_julia_seq , Ray.julia_ray as julia_ray
 from dask.distributed import Client
 
 def measure_performance(func, *args, **kwargs):
@@ -38,8 +38,8 @@ if __name__ =="__main__":
 
 
     # Measure performance for Ray
-    num_of_workers_ray = int(generate_julia_ray.initialize_ray())
-    ray_result, ray_time, ray_memory = measure_performance(generate_julia_ray.generate_julia,  num_of_workers_ray , max_iterations, a , z_array_np)
+    num_of_workers_ray = int(julia_ray.initialize_ray())
+    ray_result, ray_time, ray_memory = measure_performance(julia_ray.generate_julia,  num_of_workers_ray , max_iterations, a , z_array_np)
     print(f"Ray - Time: {ray_time} seconds, Memory: {ray_memory} MiB")
 
     # Measure performance for Dask

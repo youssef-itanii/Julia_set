@@ -1,8 +1,0 @@
-  499  source env/bin/activate;cd ray_julia; ray start --head --num-cpus=8
-  500  RAY_ADDRESS='http://127.0.0.1:8265' ray job submit --working-dir . -- python julia_ray.py
-  501  ray stop
-  502  ray start --head --num-cpus=12
-  503  RAY_ADDRESS='http://127.0.0.1:8265' ray job submit --working-dir . -- python julia_ray.py
-  504  ray stop
-  505  ray start --head --num-cpus=16
-  506  RAY_ADDRESS='http://127.0.0.1:8265' ray job submit --working-dir . -- python julia_ray.py

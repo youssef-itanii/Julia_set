@@ -90,8 +90,9 @@ if __name__ == "__main__":
     num_cpus = resources.get("CPU")
     print('Problem Size, Execution Time, Number of Workers,Total CPUs')
     start = 1000
-    for i in range(20):  # Adjust this based on your needs
-        main(start*2, num_workers, num_cpus)
+    for i in range(6):  # Adjust this based on your needs
+        main(start, num_workers, num_cpus)
+        start*=2
 
     ray.shutdown()  # Shut down Ray at the end
 

@@ -1,37 +1,31 @@
+import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+# Reload the performance data due to environment reset
+dask_performance_path = 'dask_performance_2.csv'
+ray_performance_path = 'ray_performance_2.csv'
 
-import pandas as pd
+dask_performance_data = pd.read_csv(dask_performance_path)
+ray_performance_data = pd.read_csv(ray_performance_path)
 
-# Load the data for analysis
-dask_file_path = 'dask_performance.csv'
-ray_file_path = 'ray_performance.csv'
+# Statistical summary of the datasets
+dask_stats = dask_performance_data.groupby('Problem Size')['Execution Time'].describe()
+ray_stats = ray_performance_data.groupby('Problem Size')['Execution Time'].describe()
 
-dask_data = pd.read_csv(dask_file_path)
-ray_data = pd.read_csv(ray_file_path)
+# Plotting the execution times for different problem sizes for both Dask and Ray
+plt.figure(figsize=(12, 6))
 
-# Displaying the first few rows of each dataframe to understand their structure
-dask_data.head(), ray_data.head()
+sns.lineplot(data=dask_performance_data, x='Problem Size', y='Execution Time', marker='o', label='Dask', color='red')
 
-# Setting up the visualization
-sns.set(style="whitegrid")
+sns.lineplot(data=ray_performance_data, x='Problem Size', y='Execution Time', marker='o', label='Ray' ,)
 
-# Plotting Dask Performance
-plt.figure(figsize=(14, 6))
-
-plt.subplot(1, 2, 1)
-sns.lineplot(data=dask_data, x='Problem Size', y='Execution Time', hue='Threads', marker='o')
-plt.title('Dask Performance')
+plt.title('Execution Time Comparison between Dask and Ray')
 plt.xlabel('Problem Size')
-plt.ylabel('Execution Time (s)')
-
-# Plotting Ray Performance
-plt.subplot(1, 2, 2)
-sns.lineplot(data=ray_data, x='Problem Size', y='Execution Time', hue='Number of Workers', marker='o')
-plt.title('Ray Performance')
-plt.xlabel('Problem Size')
-plt.ylabel('Execution Time (s)')
-
-plt.tight_layout()
+plt.ylabel('Execution Time (Seconds)')
+plt.legend()
+plt.grid(True)
 plt.show()
+
+# Displaying the statistical summary
+dask_stats, ray_stats

@@ -1,4 +1,4 @@
-ProblemSize,ExecutionTime,NumberofWorkers,TotalCPUs
+ProblemSize,ExecutionTime,Threads,TotalCPUs
 1000,1.2213294506072998,4,4.0
 1500,0.5363938808441162,4,4.0
 2000,0.9326751232147217,4,4.0
