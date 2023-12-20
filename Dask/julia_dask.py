@@ -61,7 +61,7 @@ def compute_performance(size):
 def run_job(IP_address):
     global client
     try:
-        client = Client("IP_address")
+        client = Client(IP_address)
     except OSError:
         print("Unable to connect to server.")
         exit()
