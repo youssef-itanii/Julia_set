@@ -2,14 +2,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Reload the performance data due to environment reset
 dask_performance_path = 'dask_performance_2.csv'
 ray_performance_path = 'ray_performance_2.csv'
 
 dask_performance_data = pd.read_csv(dask_performance_path)
 ray_performance_data = pd.read_csv(ray_performance_path)
 
-# Statistical summary of the datasets
 dask_stats = dask_performance_data.groupby('Problem Size')['Execution Time'].describe()
 ray_stats = ray_performance_data.groupby('Problem Size')['Execution Time'].describe()
 
