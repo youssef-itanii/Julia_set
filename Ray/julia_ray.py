@@ -20,26 +20,20 @@ def julia_set(z, max_iterations, a):
 
 def generate_julia(size ,max_iterations,a,z_array_np):
 
-    # Determine the size of each chunk
     chunk_size = size // num_workers
     remainder = size % num_workers
 
-    # Initialize a list to hold the chunks
     chunks = []
-
-    # Split the array into chunks
-    start_idx = 0
+    start = 0
     for i in range(num_workers):
-        end_idx = start_idx + chunk_size + (1 if i < remainder else 0)
-        chunk = z_array_np[start_idx:end_idx]
+        end = start + chunk_size + (1 if i < remainder else 0)
+        chunk = z_array_np[start:end]
         chunks.append(chunk)
-        start_idx = end_idx
+        start = end
 
-    # Dispatch the remote calls
     result_ids = [julia_set.remote(chunk, max_iterations, a) for chunk in chunks]
     results = ray.get(result_ids)
 
-    # Combine the results
     final_result = np.concatenate(results)
     return final_result
 
@@ -52,14 +46,11 @@ def main(size, num_workers, num_cpus):
     max_iterations = 70
     a = -0.744 + 0.148j
 
-    # Create a grid using NumPy's ogrid
     y, x = np.ogrid[1.4: -1.4: size*1j, -1.4: 1.4: size*1j]
     z_array_np = x + y*1j
 
-    # Convert the array and split the array into chunks
     start_time = time.time()
 
-    # Map the function to chunks of the new dask array
     final_result = generate_julia(size , max_iterations,a,z_array_np)
 
     end_time = time.time()
@@ -68,9 +59,8 @@ def main(size, num_workers, num_cpus):
     print(f"{size}, {execution_time}, {num_workers}, {num_cpus}")
     with open(file_name, 'a', newline='') as file:
         writer = csv.writer(file)
-        # Check if file is empty and write headers if necessary
         if os.stat(file_name).st_size == 0:
-            writer.writerow(['Problem Size', 'Execution Time', 'Number of Workers', 'Total CPUs'])
+            writer.writerow(['Problem Size', 'Execution Time', 'Threads', 'Total CPUs'])
         writer.writerow([size, execution_time, num_workers, num_cpus])
 
 if __name__ == "__main__":
