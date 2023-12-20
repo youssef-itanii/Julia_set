@@ -42,7 +42,6 @@ def generate_julia(size ,max_iterations,a,z_array_np):
 
 def main(size, num_workers, num_cpus):
 
-    workers = num_workers
     max_iterations = 70
     a = -0.744 + 0.148j
 
@@ -65,16 +64,10 @@ def main(size, num_workers, num_cpus):
 
 if __name__ == "__main__":
 
-    
-
-    # Initialize Ray with the exclude list
     ray.init(
-        address='auto',
-        
+        address='auto', 
     )
 
-
-    # Get cluster resources
     resources = ray.cluster_resources()
     num_workers = int(resources.get("CPU"))
     num_cpus = resources.get("CPU")

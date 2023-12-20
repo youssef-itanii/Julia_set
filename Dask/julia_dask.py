@@ -6,9 +6,10 @@ import dask.array as da
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
+
+
 client = None
 def julia_set(z, max_iterations, a):
-    # This function remains largely the same
     iterations_till_divergence = max_iterations + np.zeros(z.shape)
     for i in range(max_iterations):
         z = z**2 + a
@@ -18,16 +19,13 @@ def julia_set(z, max_iterations, a):
     return iterations_till_divergence
 
 def generate_julia(size, max_iterations, a, z_array_np, chunk_size):
-
     z_array = da.from_array(z_array_np, chunks=(chunk_size, chunk_size))
     result = z_array.map_blocks(julia_set, max_iterations, a, dtype=float)
 
     return result
 
 def compute_performance(size):
-    # Get total number of threads
     total_threads = sum(worker['nthreads'] for worker in client.scheduler_info()['workers'].values())
-
 
     # chunk_size = size // int(np.sqrt(total_threads))
     if total_threads == 0:
